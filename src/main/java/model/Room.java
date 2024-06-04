@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Objects;
+
 public class Room implements IRoom{
 
-    String roomNumber;
-    Double price;
-    RoomType roomType;
+    private String roomNumber;
+    private  Double price;
+    private RoomType roomType;
 
     public Room(String roomNumber, Double price, RoomType roomType) {
         this.roomNumber = roomNumber;
@@ -14,17 +16,16 @@ public class Room implements IRoom{
 
     @Override
     public String getRoomNumber() {
-        return null;
+        return roomNumber;
     }
 
     @Override
     public Double getRoomPrice() {
-        return null;
-    }
+        return price;    }
 
     @Override
     public RoomType getRoomType() {
-        return null;
+        return roomType;
     }
 
     @Override
@@ -39,5 +40,18 @@ public class Room implements IRoom{
                 ", price=" + price +
                 ", roomType=" + roomType +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(roomNumber, room.roomNumber) && Objects.equals(price, room.price) && roomType == room.roomType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, price, roomType);
     }
 }

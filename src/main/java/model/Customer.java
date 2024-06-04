@@ -1,22 +1,22 @@
 package model;
 
+import java.util.regex.Pattern;
+
 public class Customer {
     private String firstName;
     private String lastName;
     private String email;
 
+    public static final String EMAIL_PATTERN = "^(.+)@(.+).com$";
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+
     // Constructor
     public Customer(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        setEmail(email); // Use setter to include validation
-    }
-
-    // Setter for email with validation
-    private void setEmail(String email) {
-        if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+        if (!pattern.matcher(email).matches()) {
             throw new IllegalArgumentException("Invalid email format");
         }
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 
@@ -41,5 +41,17 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Customer customer = (Customer) obj;
+        return email.equals(customer.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return email.hashCode();
     }
 }
