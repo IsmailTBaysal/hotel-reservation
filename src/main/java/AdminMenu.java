@@ -58,12 +58,39 @@ public class AdminMenu {
     private static void addRooms(Scanner scanner) {
         String addAnotherRoom;
         do {
-            System.out.println("Enter room number:");
-            String roomNumber = scanner.nextLine();
-            System.out.println("Enter room price:");
-            Double price = Double.valueOf(scanner.nextLine());
-            System.out.println("Enter room type (1 for single, 2 for double):");
-            RoomType roomType = scanner.nextLine().equals("1") ? RoomType.SINGLE : RoomType.DOUBLE;
+            String roomNumber = "";
+            while (roomNumber.isEmpty()) {
+                System.out.println("Enter room number:");
+                roomNumber = scanner.nextLine().trim();
+                if (roomNumber.isEmpty()) {
+                    System.out.println("Room number cannot be empty. Please enter a valid room number.");
+                }
+            }
+
+            Double price = null;
+            while (price == null) {
+                System.out.println("Enter room price:");
+                String priceInput = scanner.nextLine();
+                try {
+                    price = Double.valueOf(priceInput);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number for the room price.");
+                }
+            }
+
+            RoomType roomType = null;
+            while (roomType == null) {
+                System.out.println("Enter room type (1 for single, 2 for double):");
+                String typeInput = scanner.nextLine();
+                if (typeInput.equals("1")) {
+                    roomType = RoomType.SINGLE;
+                } else if (typeInput.equals("2")) {
+                    roomType = RoomType.DOUBLE;
+                } else {
+                    System.out.println("Invalid input. Please enter '1' for single or '2' for double.");
+                }
+            }
+
             IRoom room = new Room(roomNumber, price, roomType);
             try {
                 adminResource.addRoom(room);
@@ -82,4 +109,6 @@ public class AdminMenu {
 
         } while (addAnotherRoom.equalsIgnoreCase("y"));
     }
+
+
 }
